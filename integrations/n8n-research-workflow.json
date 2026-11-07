@@ -1,0 +1,107 @@
+{
+  "name": "AI Research Workflow Search",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "ai-research-search",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-topic",
+      "name": "Webhook Topic",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:9082/v1/search",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ topic: $json.body.topic || $json.query.topic || $json.topic, mode: $json.body.mode || \"auto\", max_results: $json.body.max_results || 10, no_network: $json.body.no_network ?? false, providers: $json.body.providers || [] }) }}",
+        "options": {
+          "timeout": 180000
+        }
+      },
+      "id": "call-research-workflow",
+      "name": "Call Research Workflow",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: { run_id: $json.run_id, report_markdown: $json.report_markdown, provider_health: $json.provider_health || [], source_count: ($json.sources || []).length, evidence_count: ($json.evidence || []).length, claim_count: ($json.claims || []).length } }];"
+      },
+      "id": "shape-response",
+      "name": "Shape Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        760,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "respond",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1020,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook Topic": {
+      "main": [
+        [
+          {
+            "node": "Call Research Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Research Workflow": {
+      "main": [
+        [
+          {
+            "node": "Shape Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Shape Response": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "name": "explicit_stopped",
+    "input": {"record_status": "stopped", "service_record_present": true, "process_alive": false, "live_listener": false, "health_ok": false},
+    "expected": "stopped_by_design"
+  },
+  {
+    "name": "no_record",
+    "input": {"record_status": "", "service_record_present": false, "process_alive": false, "live_listener": false, "health_ok": false},
+    "expected": "stopped_by_design"
+  },
+  {
+    "name": "expired_running_record_dead_pid",
+    "input": {"record_status": "running", "service_record_present": true, "process_alive": false, "live_listener": false, "health_ok": false},
+    "expected": "needs_manual_start"
+  },
+  {
+    "name": "port_occupied_health_failed",
+    "input": {"record_status": "running", "service_record_present": true, "process_alive": false, "live_listener": true, "health_ok": false},
+    "expected": "failed"
+  },
+  {
+    "name": "process_alive_listener_missing",
+    "input": {"record_status": "running", "service_record_present": true, "process_alive": true, "live_listener": false, "health_ok": false},
+    "expected": "failed"
+  },
+  {
+    "name": "healthy",
+    "input": {"record_status": "running", "service_record_present": true, "process_alive": true, "live_listener": true, "health_ok": true},
+    "expected": "online"
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "name": "stopped",
+    "status": {"service": "ai-research-workflow", "status": "stopped", "config": {"base_url": "http://127.0.0.1:9082", "port": 9082}, "live_listener": false, "health": {"ok": false, "error": "connection refused"}},
+    "expected": {"observed_status": "stopped", "configured": true, "listening": false, "healthy": false, "stale_record": false, "stopped_by_design": true, "recovery_proposed": true}
+  },
+  {
+    "name": "stale_pid",
+    "status": {"service": "ai-research-workflow", "status": "stale_record", "config": {"base_url": "http://127.0.0.1:9082", "port": 9082}, "live_listener": false, "health": {"ok": false, "error": "timed out"}, "stale_reasons": ["pid_not_alive", "no_live_listener"]},
+    "expected": {"observed_status": "stale_record", "configured": true, "listening": false, "healthy": false, "stale_record": true, "stopped_by_design": true, "recovery_proposed": true}
+  },
+  {
+    "name": "config_mismatch",
+    "status": {"service": "ai-research-workflow", "status": "config_mismatch", "config": {"base_url": "http://127.0.0.1:9082", "port": 9082}, "live_listener": false, "health": {"ok": false}, "stale_reasons": ["service_record_base_url_mismatch"]},
+    "expected": {"observed_status": "stale_record", "configured": true, "listening": false, "healthy": false, "stale_record": true, "stopped_by_design": true, "recovery_proposed": true}
+  },
+  {
+    "name": "healthy_mock",
+    "status": {"service": "ai-research-workflow", "status": "running", "config": {"base_url": "http://127.0.0.1:9082", "port": 9082}, "live_listener": true, "health": {"ok": true}},
+    "expected": {"observed_status": "healthy", "configured": true, "listening": true, "healthy": true, "stale_record": false, "stopped_by_design": false, "recovery_proposed": false}
+  },
+  {
+    "name": "health_timeout",
+    "status": {"service": "ai-research-workflow", "status": "stale_record", "config": {"base_url": "http://127.0.0.1:9082", "port": 9082}, "live_listener": false, "health": {"ok": false, "error": "timed out"}, "stale_reasons": ["health_failed"]},
+    "expected": {"observed_status": "stale_record", "configured": true, "listening": false, "healthy": false, "stale_record": true, "stopped_by_design": true, "recovery_proposed": true}
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "data_dir": ".research",
+  "fetch_urls": false,
+  "max_results": 10,
+  "obsidian_folder": "AI Research",
+  "obsidian_vault": "",
+  "search_providers": [
+    "searxng"
+  ],
+  "routing_strategy": "legacy_fanout",
+  "search_profile": "default",
+  "searxng_public_discovery": true,
+  "searxng_public_instances_url": "https://searx.space/data/instances.json",
+  "searxng_public_limit": 3,
+  "searxng_url": "http://127.0.0.1:8928",
+  "searxng_urls": [],
+  "web_host": "127.0.0.1",
+  "web_port": 9082,
+  "reader_provider": "local",
+  "web_content_fetcher_path": "",
+  "personal_intelligence_desk_path": ""
+}

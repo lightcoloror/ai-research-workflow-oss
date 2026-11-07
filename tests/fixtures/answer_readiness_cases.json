@@ -1,0 +1,249 @@
+{
+  "schema": "research.answer-benchmark-fixtures.v1",
+  "cases": [
+    {
+      "id": "wcf_single_source_candidate",
+      "question": "What is Example Domain intended for?",
+      "as_of": "2026-07-11T00:00:00Z",
+      "retrieval": {"configured": true, "service_online": false, "status": "local_archive", "result_count": 1},
+      "answer_claims": [
+        {"id": "c1", "text": "Example Domain is intended for documentation examples.", "risk_level": "normal"}
+      ],
+      "sources": [
+        {
+          "id": "s1",
+          "url": "https://example.com",
+          "publisher": "IANA",
+          "source_type": "official",
+          "retrieved_at": "2026-06-01T02:01:42Z",
+          "local_path": "local://fixtures/web-content-fetcher/output/evidence/1dce8e2b8f71be76/extracted_text.md",
+          "artifact_sha256": "8c1e8564424fdb68b8b7bdff3e16173a2e3599e9b71620637251486c5c4d5ed6"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "e1",
+          "claim_id": "c1",
+          "source_id": "s1",
+          "direction": "supported",
+          "citation": "https://example.com",
+          "text": "This domain is for use in documentation examples without needing permission."
+        }
+      ],
+      "expected": {"readiness": "candidate"}
+    },
+    {
+      "id": "two_independent_sources_ready",
+      "question": "Does the local tool expose an offline contract?",
+      "as_of": "2026-07-11T00:00:00Z",
+      "retrieval": {"configured": true, "service_online": false, "status": "success", "result_count": 2},
+      "answer_claims": [
+        {"id": "c1", "text": "The tool exposes an offline contract test.", "risk_level": "normal"}
+      ],
+      "sources": [
+        {"id": "s1", "url": "local://project/contract-test", "publisher": "project-code", "source_type": "project"},
+        {"id": "s2", "url": "local://tests/offline-contract", "publisher": "project-tests", "source_type": "project"}
+      ],
+      "evidence": [
+        {"id": "e1", "claim_id": "c1", "source_id": "s1", "direction": "supported", "citation": "local://project/contract-test", "text": "The command validates stable integration structures without requiring an online service."},
+        {"id": "e2", "claim_id": "c1", "source_id": "s2", "direction": "supported", "citation": "local://tests/offline-contract", "text": "The offline regression test asserts an ok contract result while live smoke remains skipped."}
+      ],
+      "expected": {"readiness": "ready"}
+    },
+    {
+      "id": "conflicting_sources_contradicted",
+      "question": "Is the service currently online?",
+      "as_of": "2026-07-11T00:00:00Z",
+      "retrieval": {"configured": true, "service_online": false, "status": "success", "result_count": 2},
+      "answer_claims": [
+        {"id": "c1", "text": "The service is currently online.", "risk_level": "high", "requires_freshness": true, "max_age_days": 1}
+      ],
+      "sources": [
+        {"id": "s1", "url": "local://service-record", "publisher": "service-record", "retrieved_at": "2026-07-11T00:00:00Z"},
+        {"id": "s2", "url": "local://socket-check", "publisher": "runtime-check", "retrieved_at": "2026-07-11T00:00:00Z"}
+      ],
+      "evidence": [
+        {"id": "e1", "claim_id": "c1", "source_id": "s1", "direction": "supported", "citation": "local://service-record", "text": "The historical service record labels the process as running and contains an old process identifier."},
+        {"id": "e2", "claim_id": "c1", "source_id": "s2", "direction": "contradicted", "citation": "local://socket-check", "text": "The current socket and health checks show no listener and classify the record as stale."}
+      ],
+      "expected": {"readiness": "contradicted"}
+    },
+    {
+      "id": "stale_time_sensitive_insufficient",
+      "question": "Is the provider currently available?",
+      "as_of": "2026-07-11T00:00:00Z",
+      "retrieval": {"configured": true, "service_online": false, "status": "success", "result_count": 1},
+      "answer_claims": [
+        {"id": "c1", "text": "The provider is currently available.", "requires_freshness": true, "max_age_days": 7}
+      ],
+      "sources": [
+        {"id": "s1", "url": "local://provider/status-2025", "publisher": "provider-status", "published_at": "2025-01-01T00:00:00Z"}
+      ],
+      "evidence": [
+        {"id": "e1", "claim_id": "c1", "source_id": "s1", "direction": "supported", "citation": "local://provider/status-2025", "text": "A historical status snapshot reported that the provider was available at collection time."}
+      ],
+      "expected": {"readiness": "insufficient"}
+    },
+    {
+      "id": "empty_retrieval_insufficient",
+      "question": "What does the unavailable source establish?",
+      "as_of": "2026-07-11T00:00:00Z",
+      "retrieval": {"configured": true, "service_online": true, "status": "empty", "result_count": 0},
+      "answer_claims": [
+        {"id": "c1", "text": "The unavailable source establishes the requested fact."}
+      ],
+      "sources": [],
+      "evidence": [],
+      "expected": {"readiness": "insufficient"}
+    },
+    {
+      "id": "unreachable_retrieval_insufficient",
+      "question": "Can an unreachable local service support the claim?",
+      "as_of": "2026-07-11T00:00:00Z",
+      "retrieval": {"configured": true, "service_online": false, "status": "unreachable", "result_count": 0},
+      "answer_claims": [
+        {"id": "c1", "text": "The unreachable service supports the requested claim."}
+      ],
+      "sources": [],
+      "evidence": [],
+      "expected": {"readiness": "insufficient"}
+    },
+    {
+      "id": "missing_citation_candidate",
+      "question": "Can uncited local evidence be delivered as final?",
+      "as_of": "2026-07-11T00:00:00Z",
+      "retrieval": {"configured": true, "service_online": false, "status": "success", "result_count": 2},
+      "answer_claims": [
+        {"id": "c1", "text": "The fixture contains local support but one citation is missing."}
+      ],
+      "sources": [
+        {"id": "s1", "url": "local://source/a", "publisher": "source-a"},
+        {"id": "s2", "url": "local://source/b", "publisher": "source-b"}
+      ],
+      "evidence": [
+        {"id": "e1", "claim_id": "c1", "source_id": "s1", "direction": "supported", "citation": "local://source/a", "text": "The first local record supports the statement and exposes a traceable citation path."},
+        {"id": "e2", "claim_id": "c1", "source_id": "s2", "direction": "supported", "text": "The second independent record agrees but deliberately omits its citation locator."}
+      ],
+      "expected": {"readiness": "candidate"}
+    },
+    {
+      "id": "high_risk_single_source_candidate",
+      "question": "Is one source enough for a high-risk claim?",
+      "as_of": "2026-07-11T00:00:00Z",
+      "retrieval": {"configured": true, "service_online": false, "status": "success", "result_count": 1},
+      "answer_claims": [
+        {"id": "c1", "text": "A high-risk operational claim is confirmed.", "risk_level": "high"}
+      ],
+      "sources": [
+        {"id": "s1", "url": "local://official/one", "publisher": "official-one", "source_type": "official"}
+      ],
+      "evidence": [
+        {"id": "e1", "claim_id": "c1", "source_id": "s1", "direction": "supported", "citation": "local://official/one", "text": "The official local record supports the operational claim but no independent source is present."}
+      ],
+      "expected": {"readiness": "candidate"}
+    },
+    {
+      "id": "high_risk_two_sources_ready",
+      "question": "Can two independent sources support a high-risk claim?",
+      "as_of": "2026-07-11T00:00:00Z",
+      "retrieval": {"configured": true, "service_online": false, "status": "success", "result_count": 2},
+      "answer_claims": [
+        {"id": "c1", "text": "The high-risk operational claim is confirmed.", "risk_level": "high"}
+      ],
+      "sources": [
+        {"id": "s1", "url": "local://official/one", "publisher": "official-one", "source_type": "official"},
+        {"id": "s2", "url": "local://audit/two", "publisher": "independent-audit", "source_type": "institutional"}
+      ],
+      "evidence": [
+        {"id": "e1", "claim_id": "c1", "source_id": "s1", "direction": "supported", "citation": "local://official/one", "text": "The primary official record directly supports the high-risk operational claim."},
+        {"id": "e2", "claim_id": "c1", "source_id": "s2", "direction": "supported", "citation": "local://audit/two", "text": "An independent audit record corroborates the same operational claim using separate evidence."}
+      ],
+      "expected": {"readiness": "ready"}
+    },
+    {
+      "id": "partial_claim_coverage_candidate",
+      "question": "Can a partly supported two-claim answer be final?",
+      "as_of": "2026-07-11T00:00:00Z",
+      "retrieval": {"configured": true, "service_online": false, "status": "success", "result_count": 2},
+      "answer_claims": [
+        {"id": "c1", "text": "The first part is supported."},
+        {"id": "c2", "text": "The second part is also supported."}
+      ],
+      "sources": [
+        {"id": "s1", "url": "local://source/a", "publisher": "source-a"},
+        {"id": "s2", "url": "local://source/b", "publisher": "source-b"}
+      ],
+      "evidence": [
+        {"id": "e1", "claim_id": "c1", "source_id": "s1", "direction": "supported", "citation": "local://source/a", "text": "The first independent source supports only the first part of the proposed answer."},
+        {"id": "e2", "claim_id": "c1", "source_id": "s2", "direction": "supported", "citation": "local://source/b", "text": "The second independent source also supports the first part, not the unsupported second part."}
+      ],
+      "expected": {"readiness": "candidate"}
+    },
+    {
+      "id": "missing_source_url_insufficient",
+      "question": "Can evidence without a source path be delivered?",
+      "as_of": "2026-07-11T00:00:00Z",
+      "retrieval": {"configured": true, "service_online": false, "status": "success", "result_count": 1},
+      "answer_claims": [
+        {"id": "c1", "text": "The evidence has a complete source trail."}
+      ],
+      "sources": [
+        {"id": "s1", "url": "", "publisher": "detached-record"}
+      ],
+      "evidence": [
+        {"id": "e1", "claim_id": "c1", "source_id": "s1", "direction": "supported", "citation": "detached-record", "text": "The detached evidence text exists but its source record does not expose a retrievable path."}
+      ],
+      "expected": {"readiness": "insufficient"}
+    },
+    {
+      "id": "retrieval_success_answer_unsupported",
+      "question": "Does retrieval success prove the proposed answer?",
+      "as_of": "2026-07-11T00:00:00Z",
+      "retrieval": {"configured": true, "service_online": true, "status": "success", "result_count": 1},
+      "answer_claims": [
+        {"id": "c1", "text": "Retrieval success proves the proposed answer."}
+      ],
+      "sources": [
+        {"id": "s1", "url": "local://retrieved/unrelated", "publisher": "retrieval-fixture"}
+      ],
+      "evidence": [
+        {"id": "e1", "claim_id": "other", "source_id": "s1", "direction": "supported", "citation": "local://retrieved/unrelated", "text": "The retrieved record is valid but addresses another claim and cannot support this answer."}
+      ],
+      "expected": {"readiness": "insufficient"}
+    },
+    {
+      "id": "same_publisher_not_diverse_candidate",
+      "question": "Do two pages from one publisher count as independent?",
+      "as_of": "2026-07-11T00:00:00Z",
+      "retrieval": {"configured": true, "service_online": false, "status": "success", "result_count": 2},
+      "answer_claims": [
+        {"id": "c1", "text": "Two records from one publisher provide independent confirmation."}
+      ],
+      "sources": [
+        {"id": "s1", "url": "local://same-publisher/a", "publisher": "same-publisher"},
+        {"id": "s2", "url": "local://same-publisher/b", "publisher": "same-publisher"}
+      ],
+      "evidence": [
+        {"id": "e1", "claim_id": "c1", "source_id": "s1", "direction": "supported", "citation": "local://same-publisher/a", "text": "The first page supports the claim but belongs to the same underlying publisher."},
+        {"id": "e2", "claim_id": "c1", "source_id": "s2", "direction": "supported", "citation": "local://same-publisher/b", "text": "The second page repeats the claim under the same publisher and is not independent."}
+      ],
+      "expected": {"readiness": "candidate"}
+    },
+    {
+      "id": "explicit_refutation_contradicted",
+      "question": "Is the obsolete project still maintained?",
+      "as_of": "2026-07-11T00:00:00Z",
+      "retrieval": {"configured": true, "service_online": false, "status": "success", "result_count": 1},
+      "answer_claims": [
+        {"id": "c1", "text": "The obsolete project is still actively maintained.", "requires_freshness": true, "max_age_days": 30}
+      ],
+      "sources": [
+        {"id": "s1", "url": "local://project/archive-status", "publisher": "project-record", "retrieved_at": "2026-07-10T00:00:00Z"}
+      ],
+      "evidence": [
+        {"id": "e1", "claim_id": "c1", "source_id": "s1", "direction": "contradicted", "citation": "local://project/archive-status", "text": "The current local project record says maintenance stopped and the repository is archived."}
+      ],
+      "expected": {"readiness": "contradicted"}
+    }
+  ]
+}

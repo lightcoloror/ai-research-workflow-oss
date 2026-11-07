@@ -1,0 +1,97 @@
+[
+  {
+    "id": "ai-research-tab",
+    "type": "tab",
+    "label": "AI Research Workflow",
+    "disabled": false,
+    "info": "POST topic JSON to /ai-research-search, then forward to local /v1/search."
+  },
+  {
+    "id": "ai-research-http-in",
+    "type": "http in",
+    "z": "ai-research-tab",
+    "name": "Search webhook",
+    "url": "/ai-research-search",
+    "method": "post",
+    "upload": false,
+    "swaggerDoc": "",
+    "x": 150,
+    "y": 120,
+    "wires": [
+      [
+        "ai-research-shape-request"
+      ]
+    ]
+  },
+  {
+    "id": "ai-research-shape-request",
+    "type": "function",
+    "z": "ai-research-tab",
+    "name": "Shape /v1/search request",
+    "func": "const body = msg.payload || {};\nmsg.headers = { 'content-type': 'application/json' };\nmsg.payload = {\n  topic: body.topic,\n  mode: body.mode || 'auto',\n  max_results: body.max_results || 10,\n  no_network: body.no_network === undefined ? false : body.no_network,\n  providers: body.providers || []\n};\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 390,
+    "y": 120,
+    "wires": [
+      [
+        "ai-research-http-request"
+      ]
+    ]
+  },
+  {
+    "id": "ai-research-http-request",
+    "type": "http request",
+    "z": "ai-research-tab",
+    "name": "POST /v1/search",
+    "method": "POST",
+    "ret": "obj",
+    "paytoqs": "ignore",
+    "url": "http://127.0.0.1:9082/v1/search",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "authType": "",
+    "senderr": false,
+    "x": 650,
+    "y": 120,
+    "wires": [
+      [
+        "ai-research-shape-response"
+      ]
+    ]
+  },
+  {
+    "id": "ai-research-shape-response",
+    "type": "function",
+    "z": "ai-research-tab",
+    "name": "Shape agent response",
+    "func": "const data = msg.payload || {};\nmsg.payload = {\n  run_id: data.run_id,\n  report_markdown: data.report_markdown,\n  provider_health: data.provider_health || [],\n  source_count: (data.sources || []).length,\n  evidence_count: (data.evidence || []).length,\n  claim_count: (data.claims || []).length\n};\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 890,
+    "y": 120,
+    "wires": [
+      [
+        "ai-research-http-response"
+      ]
+    ]
+  },
+  {
+    "id": "ai-research-http-response",
+    "type": "http response",
+    "z": "ai-research-tab",
+    "name": "Return JSON",
+    "statusCode": "",
+    "headers": {},
+    "x": 1130,
+    "y": 120,
+    "wires": []
+  }
+]

@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Research Workflow</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-mark">R</span>
+          <div>
+            <strong>Research Workflow</strong>
+            <span>local-first cockpit</span>
+          </div>
+        </div>
+
+        <section class="side-section">
+          <label class="label" for="mode">Mode</label>
+          <div class="segmented" role="radiogroup" aria-label="Research mode">
+            <button class="segment active" data-mode="daily" type="button">Daily</button>
+            <button class="segment" data-mode="academic" type="button">Academic</button>
+            <button class="segment" data-mode="tool_selection" type="button">Tools</button>
+          </div>
+        </section>
+
+        <section class="side-section status-stack">
+          <div class="status-row">
+            <span id="searxngDot" class="dot muted"></span>
+            <span id="searxngStatus">SearXNG optional</span>
+          </div>
+          <div class="status-row">
+            <span class="dot ok"></span>
+            <span>Local evidence store</span>
+          </div>
+          <div class="status-row">
+            <span class="dot warn"></span>
+            <span>Unsupported claims stay open</span>
+          </div>
+        </section>
+
+        <section class="side-section doctor-section">
+          <div class="side-title-row">
+            <label class="label">Doctor</label>
+            <div class="mini-actions">
+              <button id="doctorBtn" class="mini-btn" type="button" title="Run diagnostics">Doctor</button>
+              <button id="selftestBtn" class="mini-btn" type="button" title="Run local end-to-end selftest">Selftest</button>
+              <button id="evalsBtn" class="mini-btn" type="button" title="Run acceptance evals">Evals</button>
+              <button id="readinessBtn" class="mini-btn" type="button" title="Run readiness report">Ready</button>
+            </div>
+          </div>
+          <div id="doctorSummary" class="doctor-summary empty-state">Diagnostics not run yet.</div>
+          <div id="doctorChecks" class="doctor-checks"></div>
+        </section>
+
+        <section class="side-section">
+          <label class="label">Search controls</label>
+          <label class="check-row">
+            <input id="networkToggle" type="checkbox" />
+            <span>Use live providers when configured</span>
+          </label>
+          <label class="check-row route-toggle">
+            <input id="autoRouteToggle" type="checkbox" checked />
+            <span>Auto route by intent, coverage, and provider budget</span>
+          </label>
+          <div class="mini-field profile-field">
+            <span>Profile</span>
+            <select id="searchProfile">
+              <option value="default">Default</option>
+              <option value="anti_seo">Anti SEO</option>
+              <option value="technical_primary">Technical primary</option>
+              <option value="medical_high_risk">Medical high risk</option>
+              <option value="policy_primary">Policy primary</option>
+              <option value="product_feedback">Product feedback</option>
+            </select>
+          </div>
+          <div id="manualProviderGrid" class="provider-grid is-disabled" aria-label="Manual search providers">
+            <label><input class="providerToggle" type="checkbox" value="searxng" checked /> SearXNG</label>
+            <label><input class="providerToggle" type="checkbox" value="brave" /> Brave</label>
+            <label><input class="providerToggle" type="checkbox" value="exa" /> Exa</label>
+            <label><input class="providerToggle" type="checkbox" value="firecrawl_developer" /> Firecrawl Dev</label>
+            <label><input class="providerToggle" type="checkbox" value="github_cli" /> GitHub CLI</label>
+            <label><input class="providerToggle" type="checkbox" value="jina" /> Jina</label>
+            <label><input class="providerToggle" type="checkbox" value="kagi" /> Kagi</label>
+            <label><input class="providerToggle" type="checkbox" value="metaso" /> 秘塔</label>
+            <label><input class="providerToggle" type="checkbox" value="perplexity" /> Perplexity</label>
+            <label><input class="providerToggle" type="checkbox" value="tavily" /> Tavily</label>
+            <label><input class="providerToggle" type="checkbox" value="serpapi" /> SerpAPI</label>
+            <label><input class="providerToggle" type="checkbox" value="you" /> You.com</label>
+          </div>
+          <div class="provider-presets" aria-label="Routing profile presets">
+            <button class="preset-btn active" type="button" data-provider-preset="default" title="Local plus configured general-purpose sources">Default</button>
+            <button class="preset-btn" type="button" data-provider-preset="zh" title="Chinese web and domestic AI/product coverage">中文</button>
+            <button class="preset-btn" type="button" data-provider-preset="tech" title="English technical docs, APIs, GitHub, and official pages">Tech</button>
+            <button class="preset-btn" type="button" data-provider-preset="research" title="Broad research recall with AI-search APIs and Google/Brave views">Research</button>
+            <button class="preset-btn" type="button" data-provider-preset="verify" title="Independent cross-checking sources for fact verification">Verify</button>
+          </div>
+          <label class="check-row">
+            <input id="fetchToggle" type="checkbox" />
+            <span>Fetch page text during ingest</span>
+          </label>
+          <label class="check-row">
+            <input id="autoVerifyToggle" type="checkbox" checked />
+            <span>Auto fact-check after search</span>
+          </label>
+          <div class="mini-field">
+            <span>Max results</span>
+            <input id="maxResults" type="number" min="1" max="50" value="10" />
+          </div>
+        </section>
+
+        <section class="side-section">
+          <label class="label" for="urlInput">Manual URLs</label>
+          <textarea id="urlInput" rows="7" placeholder="https://docs.searxng.org/&#10;https://github.com/shmsw25/factscore"></textarea>
+          <button id="ingestBtn" class="secondary-btn" type="button">＋ Ingest URLs</button>
+        </section>
+
+        <section class="side-section">
+          <label class="label" for="evidenceText">Manual Evidence</label>
+          <input id="evidenceUrl" placeholder="optional source URL" />
+          <textarea id="evidenceText" rows="6" placeholder="Paste a short source-backed note or paraphrase. This becomes local evidence for claim verification."></textarea>
+          <button id="addEvidenceBtn" class="secondary-btn" type="button">＋ Add Evidence</button>
+        </section>
+
+        <section class="side-section saved-section">
+          <div class="side-title-row">
+            <label class="label">Saved runs</label>
+            <button id="clearRunsBtn" class="mini-btn" type="button" title="Clear saved runs">Clear</button>
+          </div>
+          <div id="savedRuns" class="saved-runs empty-state">No saved runs yet.</div>
+        </section>
+      </aside>
+
+      <main class="workspace">
+        <header class="command-bar">
+          <div class="query-wrap">
+            <label class="label" for="topicInput">Research topic</label>
+            <input id="topicInput" value="FActScore RARR FacTool 方法差异" />
+          </div>
+          <button id="runBtn" class="primary-btn" type="button">⌕ Run Search</button>
+          <button id="deepenBtn" class="secondary-btn" type="button">＋ Deepen</button>
+          <button id="fullRunBtn" class="secondary-btn" type="button">↻ Full Chain</button>
+          <button id="verifyBtn" class="secondary-btn" type="button">✓ Verify Text</button>
+          <button id="auditBtn" class="secondary-btn" type="button">Audit</button>
+          <button id="exportBtn" class="icon-btn" type="button" title="Export Markdown">⇩</button>
+          <button id="obsidianBtn" class="icon-btn" type="button" title="Export current saved run to Obsidian">◇</button>
+        </header>
+
+        <section class="notice" id="notice">Ready. Use no-network mode by default unless RESEARCH_SEARXNG_URL is configured.</section>
+
+        <section class="panel job-panel">
+          <div class="panel-heading">
+            <h2>Job Progress</h2>
+            <div class="job-actions">
+              <button id="jobsRefreshBtn" class="mini-btn" type="button">Jobs</button>
+              <button id="jobRefreshBtn" class="mini-btn" type="button">Refresh</button>
+              <button id="jobRetryBtn" class="mini-btn" type="button">Retry</button>
+              <span id="jobStatus" class="tiny-chip">idle</span>
+            </div>
+          </div>
+          <div id="jobEvents" class="job-events empty-state">No active job yet.</div>
+          <div id="recentJobs" class="recent-jobs empty-state">No recent jobs loaded.</div>
+        </section>
+
+        <section class="metrics-row">
+          <div><strong id="metricSources">0</strong><span>sources</span></div>
+          <div><strong id="metricEvidence">0</strong><span>evidence</span></div>
+          <div><strong id="metricClaims">0</strong><span>claims</span></div>
+          <div><strong id="metricOpen">0</strong><span>open claims</span></div>
+        </section>
+
+        <section class="panel service-panel">
+          <div class="panel-heading">
+            <h2>Local Service</h2>
+            <span id="serviceStatus" class="tiny-chip">loading</span>
+          </div>
+          <div id="serviceDashboard" class="service-dashboard empty-state">Loading local service status.</div>
+        </section>
+
+        <section class="panel routing-panel">
+          <div class="panel-heading">
+            <h2>Adaptive Routing</h2>
+            <span id="routingStatus" class="tiny-chip">not planned</span>
+          </div>
+          <div id="routingContent" class="empty-state">Auto route will show planned stages, provider calls, coverage checks, and the stop reason here.</div>
+        </section>
+
+        <section class="panel quality-panel">
+          <div class="panel-heading">
+            <h2>Evidence Quality</h2>
+            <div class="job-actions">
+              <button id="qualityReviewBtn" class="mini-btn" type="button" title="Review citation coverage and evidence strength">Quality</button>
+              <button id="claimSuggestBtn" class="mini-btn" type="button" title="Generate deepen queries without running network search">Deepen</button>
+              <button id="referenceCheckBtn" class="mini-btn" type="button" title="Check DOI and arXiv references in the report">Refs</button>
+              <span id="qualityStatus" class="tiny-chip">unknown</span>
+            </div>
+          </div>
+          <div id="qualityContent" class="empty-state">Run Search to score source authority, evidence coverage, and weak spots.</div>
+        </section>
+
+        <section class="panel provider-panel">
+          <div class="panel-heading">
+            <h2>Provider Cost & Health</h2>
+            <span id="providerHealthCount" class="tiny-chip">0 providers</span>
+          </div>
+          <div id="providerHealth" class="provider-health empty-state">Run Search to see provider quota, timeout, and cost status.</div>
+        </section>
+
+        <section class="panel coverage-panel">
+          <div class="panel-heading">
+            <h2>Coverage Map</h2>
+            <span id="coverageCount" class="tiny-chip">0 buckets</span>
+          </div>
+          <div id="coverageContent" class="empty-state">Run Search to see source buckets and missing research lanes.</div>
+        </section>
+
+        <section class="panel canonical-panel">
+          <div class="panel-heading">
+            <h2>Canonical Merge</h2>
+            <span id="canonicalCount" class="tiny-chip">0 groups</span>
+          </div>
+          <div id="canonicalContent" class="empty-state">Duplicate URLs and alternate provider hits will be merged after search.</div>
+        </section>
+
+        <section class="panel tool-panel">
+          <div class="panel-heading">
+            <h2>Tool Matrix</h2>
+            <span id="toolMatrixCount" class="tiny-chip">0 tools</span>
+          </div>
+          <div id="toolMatrix" class="empty-state">Run Search to infer tools, scenarios, open-source status, and GitHub maintenance hints.</div>
+        </section>
+
+        <div class="grid">
+          <section class="panel plan-panel">
+            <div class="panel-heading">
+              <h2>Research Plan</h2>
+              <span id="planMode" class="tiny-chip">auto</span>
+            </div>
+            <div id="planContent" class="empty-state">Run a query to generate subquestions, keywords, and source targets.</div>
+          </section>
+
+          <section class="panel evidence-panel">
+            <div class="panel-heading">
+              <h2>Sources & Evidence</h2>
+              <span id="sourceCount" class="tiny-chip">0</span>
+            </div>
+            <div id="sourceList" class="source-list empty-state">No sources yet. Ingest URLs or configure SearXNG.</div>
+          </section>
+
+          <section class="panel claims-panel">
+            <div class="panel-heading">
+              <h2>Atomic Claims</h2>
+              <span id="claimCount" class="tiny-chip">0</span>
+            </div>
+            <p class="policy-note">High-risk claims need two independent source IDs before they can be marked supported.</p>
+            <div class="claim-table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Claim</th>
+                    <th>Risk</th>
+                    <th>Evidence</th>
+                    <th>Verdict</th>
+                    <th>Revision</th>
+                    <th>Conf.</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="claimTable">
+                  <tr><td colspan="7" class="empty-cell">Paste or generate a report, then verify.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <section class="report-zone">
+          <div class="panel-heading">
+            <h2>Report Preview</h2>
+            <span class="tiny-chip">Markdown</span>
+          </div>
+          <textarea id="reportText" spellcheck="false" placeholder="# Report&#10;&#10;Run a query or paste text here, then verify atomic claims."></textarea>
+        </section>
+      </main>
+      <aside id="claimDrawer" class="claim-drawer" hidden aria-label="Claim details">
+        <div class="claim-drawer-header">
+          <div>
+            <span class="drawer-label">Atomic Claim</span>
+            <strong>Evidence Detail</strong>
+          </div>
+          <button id="claimDrawerCloseBtn" class="icon-btn" type="button" title="Close claim details">×</button>
+        </div>
+        <div id="claimDrawerBody" class="claim-drawer-body"></div>
+      </aside>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

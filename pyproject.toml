@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-research-workflow"
+version = "0.1.0"
+description = "Local-first multi-source retrieval and atomic fact checking workflow"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+dependencies = [
+  "jsonschema>=4.23,<5",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest>=9,<10",
+  "question-research-poc @ git+https://github.com/lightcoloror/question-research-poc-oss.git@29f751e610a7a29fcb65b84d0455ccc8eb99b328",
+  "model-provider-gateway[execution] @ git+https://github.com/lightcoloror/model-provider-gateway-oss.git@6e69689d02dc97bc2cd3e476518ac7571e310461",
+]
+reader = [
+  "web-content-fetcher @ git+https://github.com/lightcoloror/web-content-fetcher-oss.git@c9432cd98bafa69523722e3ab8e081f373fcb7fb",
+]
+gateway = [
+  "model-provider-gateway[execution] @ git+https://github.com/lightcoloror/model-provider-gateway-oss.git@6e69689d02dc97bc2cd3e476518ac7571e310461",
+]
+
+[project.scripts]
+research = "research_workflow.cli:main"
+research-web = "research_workflow.web:main"
+research-mcp = "research_workflow.mcp_server:main"
+
+[tool.setuptools.package-data]
+research_workflow = [
+  "assets/README.md",
+  "assets/integrations/*",
+  "assets/docs/*.md",
+  "assets/web/*.css",
+  "assets/web/*.html",
+  "assets/web/*.js",
+]
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

@@ -1,0 +1,396 @@
+{
+  "agent_discovery": {
+    "endpoint": "GET /v1/discovery",
+    "json": "agent-discovery.json",
+    "markdown": "AGENT_DISCOVERY.md"
+  },
+  "api_version": "v1",
+  "automation_adapters": {
+    "dify": "dify-openapi-tool.md",
+    "n8n": "n8n-research-workflow.json",
+    "node_red": "node-red-research-workflow.json"
+  },
+  "base_url": "http://127.0.0.1:9082",
+  "bookmarklet": {
+    "generated_file": "research-workflow-bookmarklet.md",
+    "purpose": "One-click ingest of the current browser page into /v1/ingest.",
+    "requires_cors": true
+  },
+  "clients": {
+    "javascript": "research-workflow-client.mjs",
+    "python": "research_workflow_client.py"
+  },
+  "config_hash": "fb9be0ac06022164",
+  "contract_version": "2026-06-06.v1",
+  "description": "Local-first multi-source retrieval and optional atomic fact-checking backend.",
+  "endpoints": {
+    "agent_events": {
+      "method": "GET",
+      "path": "/v1/agent/jobs/{job_id}/events",
+      "purpose": "Poll stable agent job events without using internal job endpoints."
+    },
+    "agent_fetch": {
+      "method": "POST",
+      "path": "/v1/agent/fetch",
+      "purpose": "Stable async agent contract for URL fetch and evidence ingestion jobs."
+    },
+    "agent_job": {
+      "method": "GET",
+      "path": "/v1/agent/jobs/{job_id}",
+      "purpose": "Poll stable agent job status and final result."
+    },
+    "agent_research": {
+      "method": "POST",
+      "path": "/v1/agent/research",
+      "purpose": "Stable async agent contract for research jobs. Returns job_id and polling links."
+    },
+    "agent_retry": {
+      "method": "POST",
+      "path": "/v1/agent/jobs/{job_id}/retry",
+      "purpose": "Retry a terminal agent job with optional payload overrides."
+    },
+    "agent_verify": {
+      "method": "POST",
+      "path": "/v1/agent/verify",
+      "purpose": "Stable async agent contract for atomic verification jobs."
+    },
+    "audit": {
+      "method": "GET",
+      "path": "/api/audit?id=<run_id>",
+      "purpose": "Re-check a persisted run."
+    },
+    "capabilities": {
+      "method": "GET",
+      "path": "/v1/capabilities",
+      "purpose": "Discover modes, providers, formats, and feature flags."
+    },
+    "discovery": {
+      "method": "GET",
+      "path": "/v1/discovery",
+      "purpose": "Discover recommended agent interfaces and evidence policy."
+    },
+    "doctor": {
+      "method": "GET",
+      "path": "/api/doctor",
+      "purpose": "Check local configuration and runtime health."
+    },
+    "evidence": {
+      "method": "POST",
+      "path": "/api/evidence",
+      "purpose": "Add a source-backed manual evidence note."
+    },
+    "health": {
+      "method": "GET",
+      "path": "/v1/health",
+      "purpose": "Check service health and API version."
+    },
+    "obsidian": {
+      "method": "POST",
+      "path": "/api/obsidian",
+      "purpose": "Export a saved run to Obsidian."
+    },
+    "openapi": {
+      "method": "GET",
+      "path": "/v1/openapi.json",
+      "purpose": "Machine-readable OpenAPI contract."
+    },
+    "run": {
+      "method": "POST",
+      "path": "/api/run",
+      "purpose": "Plan, retrieve, collect evidence, verify claims, persist report, and audit."
+    },
+    "runs": {
+      "method": "GET",
+      "path": "/api/runs?limit=20",
+      "purpose": "List persisted runs."
+    },
+    "search": {
+      "method": "POST",
+      "path": "/api/search",
+      "purpose": "Plan, retrieve, collect evidence snippets, persist a search-only report, and skip fact checking."
+    },
+    "selftest": {
+      "method": "POST",
+      "path": "/api/selftest",
+      "purpose": "Run local end-to-end acceptance checks."
+    },
+    "v1_deepen": {
+      "method": "POST",
+      "path": "/v1/deepen",
+      "purpose": "Stable agent-facing deepened search run."
+    },
+    "v1_deepen_claims": {
+      "method": "POST",
+      "path": "/v1/runs/{run_id}/deepen-claims",
+      "purpose": "Generate next-search queries for partial, not_found, or high-risk weak claims."
+    },
+    "v1_events": {
+      "method": "GET",
+      "path": "/v1/runs/{run_id}/events",
+      "purpose": "Fetch run events as JSON or SSE."
+    },
+    "v1_ingest": {
+      "method": "POST",
+      "path": "/v1/ingest",
+      "purpose": "Stable agent-facing manual URL ingest."
+    },
+    "v1_quality": {
+      "method": "POST",
+      "path": "/v1/runs/{run_id}/quality",
+      "purpose": "Summarize citation coverage, source diversity, and evidence strength."
+    },
+    "v1_references_check": {
+      "method": "POST",
+      "path": "/v1/references/check",
+      "purpose": "Validate DOI/arXiv references from text or a persisted run."
+    },
+    "v1_report_json": {
+      "method": "GET",
+      "path": "/v1/runs/{run_id}/report.json",
+      "purpose": "Fetch machine-readable report."
+    },
+    "v1_report_md": {
+      "method": "GET",
+      "path": "/v1/runs/{run_id}/report.md",
+      "purpose": "Fetch Markdown report."
+    },
+    "v1_route": {
+      "method": "POST",
+      "path": "/v1/route",
+      "purpose": "Plan adaptive provider routing without executing search."
+    },
+    "v1_run": {
+      "method": "GET",
+      "path": "/v1/runs/{run_id}",
+      "purpose": "Fetch persisted run metadata."
+    },
+    "v1_search": {
+      "method": "POST",
+      "path": "/v1/search",
+      "purpose": "Stable agent-facing search-only research run."
+    },
+    "v1_verify": {
+      "method": "POST",
+      "path": "/v1/verify",
+      "purpose": "Stable agent-facing atomic verification."
+    }
+  },
+  "name": "ai-research-workflow",
+  "package_version": "0.1.0",
+  "payload_shape": {
+    "external_payloads": "normalized Agent Reach or other specialist acquisition payloads",
+    "manual_evidence": "array of {url?: string, text: string}",
+    "max_results": "integer",
+    "mode": "daily | academic | tool_selection | auto",
+    "no_network": "boolean",
+    "profile": "default | anti_seo | technical_primary | medical_high_risk | policy_primary | product_feedback",
+    "providers": "array of provider names such as searxng, brave, kagi, tavily, serpapi",
+    "routing_strategy": "adaptive_staged | legacy_fanout | manual",
+    "text_to_verify": "optional draft/report text to split into atomic claims for /api/run",
+    "topic": "string, required for /v1/search, /v1/deepen, /api/search, and /api/run",
+    "urls": "array of URLs or newline-delimited string"
+  },
+  "preferred_entrypoint": "POST /v1/agent/research",
+  "recommended_mcp_tools": [
+    "research_route",
+    "research_search",
+    "research_deepen",
+    "research_verify",
+    "research_ingest",
+    "research_get_report",
+    "research_status",
+    "research_quality",
+    "research_deepen_claims",
+    "research_check_references"
+  ],
+  "response_contract": {
+    "audit.overall": "ok | warn | error | not_run",
+    "claims": "verified atomic claims with verdict, confidence, and evidence_ids",
+    "coverage_gate": "additive observed coverage versus the route stop conditions",
+    "deepen_suggestions": "additive next-search suggestions for unresolved or weak claims",
+    "evidence": "traceable evidence records",
+    "external_acquisition": "additive handoff instructions for Agent Reach or web-content-fetcher",
+    "kind": "search for search-only runs; omitted or research for full-chain runs",
+    "provider_health": "array of provider quota/error/timing summaries; inspect overall, *_count fields, avg_seconds, max_seconds, recent_status, rank_reason, cost_tier, limit_note, and warnings",
+    "quality_summary": "additive evidence quality summary; advisory only and safe for old clients to ignore",
+    "reference_checks": "additive academic bibliography validation for academic-mode reports",
+    "report_json": "machine-readable Report JSON",
+    "report_markdown": "Obsidian-ready Markdown report",
+    "routing_plan": "additive read-only plan containing route_kind, staged providers, budget, and stop conditions",
+    "routing_trace": "additive executed/skipped provider stages and reasons",
+    "run_id": "persisted run identifier",
+    "search_queries": "planner-expanded query attempts with status and source_count for coverage review",
+    "sources": "traceable source records; use search_queries/search_buckets/search_purposes/search_stages to audit where each source came from",
+    "stop_reason": "additive reason the adaptive search stopped"
+  },
+  "routing_contract": {
+    "configured_providers_are_pool_in_adaptive_mode": true,
+    "explicit_providers_are_manual": true,
+    "profiles": [
+      "default",
+      "anti_seo",
+      "technical_primary",
+      "medical_high_risk",
+      "policy_primary",
+      "product_feedback"
+    ],
+    "provider_capabilities": {
+      "brave": {
+        "cost_tier": "free_credits",
+        "credential_mode": "api_key",
+        "intents": [
+          "daily",
+          "zh",
+          "verify",
+          "developer"
+        ]
+      },
+      "exa": {
+        "cost_tier": "free_quota",
+        "credential_mode": "api_key",
+        "intents": [
+          "deep",
+          "developer",
+          "academic",
+          "verify"
+        ]
+      },
+      "firecrawl_developer": {
+        "cost_tier": "keyless_or_credits",
+        "credential_mode": "keyless_or_api_key",
+        "intents": [
+          "developer"
+        ]
+      },
+      "github_cli": {
+        "cost_tier": "local_free",
+        "credential_mode": "optional_login",
+        "intents": [
+          "developer"
+        ]
+      },
+      "jina": {
+        "cost_tier": "free_quota",
+        "credential_mode": "api_key",
+        "intents": [
+          "deep",
+          "academic"
+        ]
+      },
+      "kagi": {
+        "cost_tier": "paid",
+        "credential_mode": "api_key",
+        "intents": [
+          "manual"
+        ]
+      },
+      "metaso": {
+        "cost_tier": "small_free_quota",
+        "credential_mode": "api_key",
+        "intents": [
+          "zh"
+        ]
+      },
+      "perplexity": {
+        "cost_tier": "paid",
+        "credential_mode": "api_key",
+        "intents": [
+          "manual"
+        ]
+      },
+      "searxng": {
+        "cost_tier": "local_free",
+        "credential_mode": "none",
+        "intents": [
+          "daily",
+          "deep",
+          "zh",
+          "academic",
+          "verify",
+          "developer"
+        ]
+      },
+      "serpapi": {
+        "cost_tier": "small_free_quota",
+        "credential_mode": "api_key",
+        "intents": [
+          "fallback"
+        ]
+      },
+      "tavily": {
+        "cost_tier": "free_quota",
+        "credential_mode": "api_key",
+        "intents": [
+          "daily",
+          "deep",
+          "academic",
+          "verify"
+        ]
+      },
+      "you": {
+        "cost_tier": "free_quota",
+        "credential_mode": "api_key",
+        "intents": [
+          "daily",
+          "deep",
+          "zh"
+        ]
+      }
+    },
+    "strategies": [
+      "adaptive_staged",
+      "legacy_fanout",
+      "manual"
+    ]
+  },
+  "sdk_contract": {
+    "entrypoints": [
+      "health",
+      "contract_info",
+      "assert_contract",
+      "route",
+      "agent_research",
+      "agent_verify",
+      "agent_fetch",
+      "agent_job",
+      "agent_events",
+      "agent_retry",
+      "wait_for_agent_job",
+      "failure_details"
+    ],
+    "error_categories": [
+      "service_unavailable",
+      "contract_mismatch",
+      "job_failed",
+      "timeout",
+      "http_error",
+      "invalid_response"
+    ],
+    "expected_contract_version": "2026-06-06.v1",
+    "recommended_poll_interval_seconds": 1.5,
+    "recommended_timeout_seconds": 300
+  },
+  "watch_folder": {
+    "command": "python -m research_workflow.cli jobs --jobs-dir .research-jobs --data-dir .research --format json",
+    "failed": ".research-jobs/failed",
+    "inbox": ".research-jobs/inbox",
+    "job_types": [
+      "search",
+      "deepen",
+      "verify",
+      "fetch",
+      "ingest"
+    ],
+    "outbox": ".research-jobs/outbox",
+    "status_fields": [
+      "service",
+      "api_version",
+      "contract_version",
+      "config_hash",
+      "job_id",
+      "type",
+      "status",
+      "created_outputs"
+    ]
+  }
+}
