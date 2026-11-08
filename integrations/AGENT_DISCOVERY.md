@@ -131,3 +131,17 @@ research-workflow-bookmarklet.md
 - Success is a reference-validation receipt, not an ARW evidence import or truth transition.
 - Candidate, missing support, conflict, stale, corrupt, link/summary/schema/hash drift, AI-synthesis-as-fact, and model-memory-as-evidence states fail closed.
 - Every receipt keeps `research_truth_effect=none`, `evidence_status_change=none`, and `candidate_promoted=false`.
+
+### Medical Evidence And Health Support (On Demand)
+
+Updated: 2026-10-31 | Codex (gpt-6.1-sol).
+
+For medical literature, explicitly select `medical_high_risk`. The route returns
+`review_prompts`: `medical_evidence_review` and `medical_report_handoff`.
+Retrieve them using the existing `list_claim_verification_prompts` /
+`get_claim_verification_prompt` MCP tools (or the Python prompt registry).
+They do not run automatically or grant clinical clearance. For user-requested
+ordinary health-support planning, separately load `health_support_review`.
+See `docs/medical-health-methods.md` before handing any action to schedule-planner.
+No diagnostic, treatment, prognosis, drug-design, upload or calendar-write module
+is enabled by this guidance.

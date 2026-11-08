@@ -87,6 +87,7 @@ class RoutingPlan:
     stop_conditions: dict[str, int | bool] = field(default_factory=dict)
     external_acquisition: list[dict] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
+    review_prompts: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -139,6 +140,7 @@ def build_routing_plan(
         stop_conditions=_stop_conditions(route_kind),
         external_acquisition=external,
         warnings=warnings,
+        review_prompts=["medical_evidence_review", "medical_report_handoff"] if selected_profile == "medical_high_risk" else [],
     )
 
 
@@ -220,6 +222,9 @@ def routing_plan_to_markdown(plan: RoutingPlan) -> str:
         lines.extend(["", "## External Acquisition"])
         for item in plan.external_acquisition:
             lines.append(f"- `{item['adapter']}`: {item['action']}")
+    if plan.review_prompts:
+        lines.extend(["", "## Human Review Guidance", "Load the named templates through the existing claim-verification prompt registry. These are instructions, not executed checks or clinical clearance."])
+        lines.extend(f"- `{name}`" for name in plan.review_prompts)
     return "\n".join(lines) + "\n"
 
 
