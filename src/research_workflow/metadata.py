@@ -10,7 +10,7 @@ from .contract import API_VERSION, CONTRACT_VERSION
 
 
 PACKAGE_NAME = "ai-research-workflow"
-PACKAGE_VERSION = "0.1.0"
+PACKAGE_VERSION = "0.1.1"
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 

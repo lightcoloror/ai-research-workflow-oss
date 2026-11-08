@@ -14,7 +14,7 @@ research readiness
 research agent-diagnose --skip-smoke --format json
 ```
 
-Use [research.config.example.json](research.config.example.json) to create a
+Use [research.config.example.json](https://github.com/lightcoloror/ai-research-workflow-oss/blob/9f1b2c03f2ee71fcb1bc7cbd4fe70e72db252161/research.config.example.json) to create a
 local configuration. The built-in reader and offline contract are available
 with the base installation. Optional extras:
 
@@ -32,8 +32,8 @@ The public source edition adapts packaging, documentation, the contract
 validator's packaged-resource lookup and synthetic tests for independent
 installation. The source checkout and installed wheel both
 include the generated client contract and agent guide. Keep configurations, credentials and captures
-outside version control. See [LICENSE](LICENSE) and
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for component-specific terms.
+outside version control. See [LICENSE](https://github.com/lightcoloror/ai-research-workflow-oss/blob/9f1b2c03f2ee71fcb1bc7cbd4fe70e72db252161/LICENSE) and
+[THIRD_PARTY_NOTICES.md](https://github.com/lightcoloror/ai-research-workflow-oss/blob/9f1b2c03f2ee71fcb1bc7cbd4fe70e72db252161/THIRD_PARTY_NOTICES.md) for component-specific terms.
 
 ## Public edition scope
 

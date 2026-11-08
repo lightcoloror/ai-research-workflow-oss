@@ -1,7 +1,7 @@
 """
 title: Research Workflow
 author: local
-version: 0.1.0
+version: 0.1.1
 description: Calls a local AI Research Workflow backend for evidence-first deep search and atomic fact checking.
 """
 

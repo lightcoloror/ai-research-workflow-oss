@@ -176,7 +176,7 @@
     }
   },
   "name": "ai-research-workflow",
-  "package_version": "0.1.0",
+  "package_version": "0.1.1",
   "payload_shape": {
     "external_payloads": "normalized Agent Reach or other specialist acquisition payloads",
     "manual_evidence": "array of {url?: string, text: string}",
