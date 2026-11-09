@@ -46,3 +46,8 @@ systems requires separate configuration and validation.
 One embedding test requires an explicitly configured local runtime and model
 and is skipped when they are unavailable. Offline tests allow loopback mock
 servers and reject external network connections.
+
+
+### Research Evidence Lifecycle Adapter
+
+Optional source-only adapter scripts in `scripts/research-evidence-lifecycle.ps1` and synthetic test source in `tests/test_research_evidence_lifecycle_adapter.py` integrate with sibling `artifact-lifecycle-core` under Apache-2.0. The wrapper exposes planning/verification commands; it can write reports and checkpoints. Source/static checks are separate from runtime acceptance; this batch has a retained pytest permission block. See [docs/research-evidence-lifecycle.md](docs/research-evidence-lifecycle.md).
