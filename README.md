@@ -51,3 +51,8 @@ servers and reject external network connections.
 ### Research Evidence Lifecycle Adapter
 
 Optional source-only adapter scripts in `scripts/research-evidence-lifecycle.ps1` and synthetic test source in `tests/test_research_evidence_lifecycle_adapter.py` integrate with sibling `artifact-lifecycle-core` under Apache-2.0. The wrapper exposes planning/verification commands; it can write reports and checkpoints. Source/static checks are separate from runtime acceptance; this batch has a retained pytest permission block. See [docs/research-evidence-lifecycle.md](docs/research-evidence-lifecycle.md).
+
+
+## Research transport failure source
+
+See [POST outcome and automatic CLI fallback](docs/post-outcome-source.md) for the optional wrapper, isolated regression and unverified runtime boundaries. No live research was performed for this source increment.
