@@ -51,3 +51,23 @@ servers and reject external network connections.
 ### Research Evidence Lifecycle Adapter
 
 Optional source-only adapter scripts in `scripts/research-evidence-lifecycle.ps1` and synthetic test source in `tests/test_research_evidence_lifecycle_adapter.py` integrate with sibling `artifact-lifecycle-core` under Apache-2.0. The wrapper exposes planning/verification commands; it can write reports and checkpoints. Source/static checks are separate from runtime acceptance; this batch has a retained pytest permission block. See [docs/research-evidence-lifecycle.md](docs/research-evidence-lifecycle.md).
+
+### Web UI capture helper (`scripts/capture-ui.mjs`)
+
+`scripts/capture-ui.mjs` captures a full-page screenshot of a locally served
+web UI over loopback HTTP. It needs an external Playwright installation with a
+Chromium build; neither is bundled with this repository or added to its
+dependency declarations, and the helper requires Playwright 1.31 or newer
+because it uses `route.fetch({ maxRedirects: 0 })`. Both arguments are
+required: an `http:` loopback URL with an explicit port, and a PNG output path.
+See [docs/ui-capture.md](docs/ui-capture.md) for prerequisites, usage and the
+exact scope of the browser-side request rule.
+
+In the default mode the script's browser-side route handler allows only
+same-origin `GET`/`HEAD` requests and blocks redirects. That restriction covers
+routed browser requests only, not service-side traffic, and it is not
+operating-system network isolation. A `GET` is not inherently side-effect-free.
+`--interact` is a synthetic-service operator option that writes service state
+and can trigger service-side requests; use it only against an authorized mock
+instance. The helper and its guide are source-only: no real browser or service
+run is claimed.
