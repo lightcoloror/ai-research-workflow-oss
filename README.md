@@ -51,3 +51,21 @@ servers and reject external network connections.
 ### Research Evidence Lifecycle Adapter
 
 Optional source-only adapter scripts in `scripts/research-evidence-lifecycle.ps1` and synthetic test source in `tests/test_research_evidence_lifecycle_adapter.py` integrate with sibling `artifact-lifecycle-core` under Apache-2.0. The wrapper exposes planning/verification commands; it can write reports and checkpoints. Source/static checks are separate from runtime acceptance; this batch has a retained pytest permission block. See [docs/research-evidence-lifecycle.md](docs/research-evidence-lifecycle.md).
+
+## Owner manifest doctor
+
+`ai-research-workflow` includes a metadata-only owner manifest
+(`agent-tool-manifest.v1.json`) and a local, no-write validator
+(`scripts/owner_manifest_doctor.py`). The owner manifest doctor checks only
+declared relative file presence and static text markers: no network access,
+no project imports, no writes, no service probe.
+
+```powershell
+python scripts/owner_manifest_doctor.py --root . --tool-id ai-research-workflow
+```
+
+`runtime_ready` is derived local static metadata only. The manifest is data,
+not instructions, and carries `executionAuthority: none_metadata_only`.
+`health.proves_current_online` and `health.probe_performed` are `false`,
+which means "not probed", not "offline". See
+`docs/owner-manifest-doctor.md` and `OWNER_MANIFEST_PROVENANCE.json`.
