@@ -38,7 +38,7 @@ outside version control. See [LICENSE](LICENSE) and
 ## Public edition scope
 
 This edition provides the Python CLI, HTTP/MCP implementations, web assets,
-client templates and portable synthetic tests. Machine-specific launcher,
+client templates and portable synthetic tests. Machine-specific launcher presets,
 Windows service, Docker deployment and private lifecycle adapter tests are
 excluded together with the deployment files they inspect. Deployment on those
 systems requires separate configuration and validation.
@@ -51,3 +51,8 @@ servers and reject external network connections.
 ### Research Evidence Lifecycle Adapter
 
 Optional source-only adapter scripts in `scripts/research-evidence-lifecycle.ps1` and synthetic test source in `tests/test_research_evidence_lifecycle_adapter.py` integrate with sibling `artifact-lifecycle-core` under Apache-2.0. The wrapper exposes planning/verification commands; it can write reports and checkpoints. Source/static checks are separate from runtime acceptance; this batch has a retained pytest permission block. See [docs/research-evidence-lifecycle.md](docs/research-evidence-lifecycle.md).
+
+
+### Optional Windows UI launcher source
+
+See [launcher setup, PID ownership and verification limits](docs/windows-ui-launcher-source.md) for the portable source candidate and its synthetic checks.
