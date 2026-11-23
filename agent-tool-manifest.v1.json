@@ -1,0 +1,98 @@
+{
+  "schema_version": "agent-tool-manifest.v1",
+  "id": "ai-research-workflow",
+  "manifest_version": 1,
+  "interfaces": [
+    {
+      "id": "cli",
+      "module": "research_workflow.cli",
+      "kind": "static_source_reference",
+      "source_path": "src/research_workflow/cli.py"
+    },
+    {
+      "id": "web",
+      "module": "research_workflow.web",
+      "kind": "static_source_reference",
+      "source_path": "src/research_workflow/web.py"
+    },
+    {
+      "id": "mcp",
+      "module": "research_workflow.mcp_server",
+      "kind": "static_source_reference",
+      "source_path": "src/research_workflow/mcp_server.py"
+    }
+  ],
+  "health": {
+    "proves_current_online": false,
+    "probe_performed": false,
+    "definition": "Derived local static metadata and required-file presence only. runtime_ready means derived_local_static: the declared relative files exist in a source checkout and any declared static text markers match. It does not mean imports, process start, service health, online status, real use or any research outcome. No process, service, network, model or research run is started, contacted or observed."
+  },
+  "provenance": {
+    "owner_doctor": "scripts/owner_manifest_doctor.py",
+    "source_edition": "public-source",
+    "no_write_checks": [
+      {
+        "id": "doctor-script",
+        "kind": "file",
+        "path": "scripts/owner_manifest_doctor.py",
+        "required": true
+      },
+      {
+        "id": "manifest-file",
+        "kind": "file",
+        "path": "agent-tool-manifest.v1.json",
+        "required": true
+      },
+      {
+        "id": "doctor-doc",
+        "kind": "file",
+        "path": "docs/owner-manifest-doctor.md",
+        "required": true,
+        "contains": "owner manifest doctor"
+      },
+      {
+        "id": "manifest-provenance",
+        "kind": "file",
+        "path": "OWNER_MANIFEST_PROVENANCE.json",
+        "required": true,
+        "contains": "agent-tool-manifest.v1"
+      },
+      {
+        "id": "readme-discoverability",
+        "kind": "file",
+        "path": "README.md",
+        "required": false,
+        "contains": "Owner manifest doctor"
+      }
+    ],
+    "runtime_checks": [
+      {
+        "id": "public-cli-module",
+        "kind": "file",
+        "path": "src/research_workflow/cli.py",
+        "required": true,
+        "contains": "main"
+      },
+      {
+        "id": "package-init",
+        "kind": "file",
+        "path": "src/research_workflow/__init__.py",
+        "required": true
+      },
+      {
+        "id": "project-entrypoints",
+        "kind": "file",
+        "path": "pyproject.toml",
+        "required": true,
+        "contains": "research_workflow.cli:main"
+      }
+    ],
+    "restore_sequence": [
+      "Read docs/owner-manifest-doctor.md and restore any repository file named in the doctor failures.",
+      "Rerun the local no-write doctor after the required file is present; do not treat this metadata as an instruction to execute anything.",
+      "Discard a stale or hash-drifted synthetic receipt and rebuild it only from the exact synthetic artifact."
+    ]
+  },
+  "notTrustedAsInstruction": true,
+  "executionAuthority": "none_metadata_only"
+}

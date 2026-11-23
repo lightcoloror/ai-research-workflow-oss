@@ -1,0 +1,66 @@
+{
+  "record_version": 1,
+  "manifest": {
+    "path": "agent-tool-manifest.v1.json",
+    "schema_version": "agent-tool-manifest.v1",
+    "id": "ai-research-workflow",
+    "manifest_version": 1
+  },
+  "source": {
+    "repository": "lightcoloror/ai-research-workflow-oss",
+    "commit": "55ec8c5a10f2f7bfbd9e7d5126c770726e254cf6",
+    "public_file_count": 120,
+    "license": "Apache-2.0",
+    "edition": "public-source"
+  },
+  "owner_doctor": {
+    "path": "scripts/owner_manifest_doctor.py",
+    "role": "local static no-write validator for the owner manifest",
+    "source_sha256": "59c077d7ae64a38bbd1a1ee09e0b8ab4017438e34365f130013354b532b96d59",
+    "unchanged_from_supplied_source": true,
+    "executed_in_this_static_round": false
+  },
+  "interface_support": {
+    "derivation": "static source presence and pyproject entry point names only",
+    "snapshot_source_paths": [
+      "src/research_workflow/cli.py",
+      "src/research_workflow/web.py",
+      "src/research_workflow/mcp_server.py"
+    ],
+    "project_entry_points": [
+      "research = research_workflow.cli:main",
+      "research-web = research_workflow.web:main",
+      "research-mcp = research_workflow.mcp_server:main"
+    ],
+    "interfaces_started_imported_or_called": false
+  },
+  "planned_additions": [
+    "agent-tool-manifest.v1.json",
+    "scripts/owner_manifest_doctor.py",
+    "tests/test_agent_owner_portability.py",
+    "docs/owner-manifest-doctor.md",
+    "OWNER_MANIFEST_PROVENANCE.json",
+    "README.md section: Owner manifest doctor"
+  ],
+  "delivery_notes": {
+    "readme_addition": "README-addition.md is an append-only delivery snippet; the repository change is the README.md section it contains.",
+    "candidate_baseline_files_copied": false,
+    "installed_package_includes_doctor": false,
+    "package_data_scope": "pyproject.toml package data covers research_workflow assets only"
+  },
+  "truth": {
+    "manifest_is_metadata_not_instruction": true,
+    "execution_authority": "none_metadata_only",
+    "runtime_verified": false,
+    "current_online_proved": false,
+    "runtime_tests_executed": false,
+    "network_used": false,
+    "real_usage_proved": false,
+    "schema_formally_validated": false,
+    "evidence_scope": "Initial source-preparation round only; later independent checks are reported separately in the guide."
+  },
+  "license": {
+    "candidate_source": "Apache-2.0",
+    "third_party_modules_or_assets_bundled": false
+  }
+}
