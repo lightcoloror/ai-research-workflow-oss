@@ -56,3 +56,53 @@ Optional source-only adapter scripts in `scripts/research-evidence-lifecycle.ps1
 ### Optional Windows UI launcher source
 
 See [launcher setup, PID ownership and verification limits](docs/windows-ui-launcher-source.md) for the portable source candidate and its synthetic checks.
+
+## Owner manifest doctor
+
+`ai-research-workflow` includes a metadata-only owner manifest
+(`agent-tool-manifest.v1.json`) and a local, no-write validator
+(`scripts/owner_manifest_doctor.py`). The owner manifest doctor checks only
+declared relative file presence and static text markers: no network access,
+no project imports, no writes, no service probe.
+
+```powershell
+python scripts/owner_manifest_doctor.py --root . --tool-id ai-research-workflow
+```
+
+`runtime_ready` is derived local static metadata only. The manifest is data,
+not instructions, and carries `executionAuthority: none_metadata_only`.
+`health.proves_current_online` and `health.probe_performed` are `false`,
+which means "not probed", not "offline". See
+`docs/owner-manifest-doctor.md` and `OWNER_MANIFEST_PROVENANCE.json`.
+
+## Research transport failure source
+
+See [POST outcome and automatic CLI fallback](docs/post-outcome-source.md) for the optional wrapper, isolated regression and unverified runtime boundaries. No live research was performed for this source increment.
+
+## Offline release audit
+
+Use the [offline release audit](docs/release-audit.md) to check a frozen source staging directory with a private local policy.
+
+### Web UI capture helper (`scripts/capture-ui.mjs`)
+
+`scripts/capture-ui.mjs` captures a full-page screenshot of a locally served
+web UI over loopback HTTP. It needs an external Playwright installation with a
+Chromium build; neither is bundled with this repository or added to its
+dependency declarations, and the helper requires Playwright 1.31 or newer
+because it uses `route.fetch({ maxRedirects: 0 })`. Both arguments are
+required: an `http:` loopback URL with an explicit port, and a PNG output path.
+See [docs/ui-capture.md](docs/ui-capture.md) for prerequisites, usage and the
+exact scope of the browser-side request rule.
+
+In the default mode the script's browser-side route handler allows only
+same-origin `GET`/`HEAD` requests and blocks redirects. That restriction covers
+routed browser requests only, not service-side traffic, and it is not
+operating-system network isolation. A `GET` is not inherently side-effect-free.
+`--interact` is a synthetic-service operator option that writes service state
+and can trigger service-side requests; use it only against an authorized mock
+instance. The helper and its guide are source-only: no real browser or service
+run is claimed.
+
+## Optional Windows uninstall source
+
+See [NSSM exit handling and isolated synthetic controls](docs/uninstall-native-exit-source.md). This optional Windows service source has limited synthetic verification; the public edition deployment exclusions above otherwise remain. No service operation was performed.
