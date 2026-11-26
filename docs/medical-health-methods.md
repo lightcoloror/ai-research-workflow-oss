@@ -15,9 +15,8 @@ not a new health platform, memory store, provider, sandbox or clinical engine.
 3. Only when ordinary health-support planning is requested, separately load
    `health_support_review`. Do not infer a request for action from a paper query.
 4. Pass only the user's confirmed, non-clinical action to schedule-planner's
-   existing normalized-input/review flow. Its health-support and
-   recovery-evidence documentation is a separate, unbundled project asset and is
-   not included in this public candidate.
+   existing normalized-input/review flow. See its
+   `docs/health-support-methods-cn.md` and recovery-evidence documentation.
 
 Python access without a running server (from this project's environment):
 
@@ -64,26 +63,18 @@ Architecture-pattern adaptation only; no upstream implementation was copied.
 
 - OPL-Cancer `ec709c01da7ba0f9e0885c122c3da9b3f9b05fcd`:
   `src/opl_cancer/delivery/claim_graph.py`, provenance hasher and gates G2/G36.
-  The upstream source snapshot and relative negative G2 fixture are not bundled
-  in this public candidate; the referenced local review archive is not
-  distributed here.
+  Local source snapshots and the negative G2 fixture are retained in
+  `../../source-reviews/opl-cancer-20261031/`.
 - Google Health consumer-health-research
   `3e9d1e4877a54cf81ce8ef34085006952dd19601`:
   `personal_health_agent/pha/agents/orchestrator.py`,
   `health_coach_agent.py`, and `pha/tools/python_sandbox.py` were inspected in
-  the preceding review. No full upstream checkout or PHA runtime test was made.
+  the preceding review. No local full checkout or PHA runtime test was made.
   Fixed upstream root:
   <https://github.com/Google-Health/consumer-health-research/tree/3e9d1e4877a54cf81ce8ef34085006952dd19601/personal_health_agent>.
 
-The upstream license status, source-snapshot provenance and clinical validity of
-both references remain unverified or unknown; this candidate does not assert
-otherwise.
-
-The focused offline tests included in this repository establish template
-availability, explicit routing and boundary wording only; they do not establish
-model compliance, patient outcomes or clinical validation. The guidance and
-templates describe human review responsibilities; no program or model in this
-repository performs those reviews automatically or grants clinical clearance.
+The local tests establish template availability, explicit routing and boundary
+wording only, not model compliance, patient outcomes or clinical validation.
 
 ## Change Rationale And Exit
 
@@ -94,6 +85,5 @@ Evidence: pinned sources above, existing routing/prompt code, focused offline te
 Scope: explicit medical profile metadata and optional Agent instructions only;
 search budgets, fact-check algorithm and scheduling engine are unchanged.
 Rollback: remove only the added prompt sections, review_prompts field/assignment
-and Markdown rendering, new tests/docs and discovery paragraphs. Never overwrite
-the existing discovery file wholesale when rolling back; remove only the appended
-paragraphs.
+and Markdown rendering, new tests/docs and discovery paragraphs. Never restore
+the entire dirty schedule-planner discovery file over unrelated changes.
